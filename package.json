@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "arabic-persian-reshaper": "^1.0.1",
+    "bidi-js": "^1.0.3",
+    "jspdf": "^3.0.3",
+    "pdfmake": "^0.2.20",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}

@@ -1,0 +1,24 @@
+📘 1️⃣ docs.txt — Documentation
+
+(شرح النظام وطريقة استخدامه)
+
+AOU SUPPORT CHATBOT - USER GUIDE
+
+Welcome to the AOU Support Chatbot!
+
+This chatbot is designed to help Arab Open University students find quick answers and support related to academic and administrative services.
+
+Main Features:
+• Ask questions in English or Arabic and get instant replies.
+• Login to save your chat history.
+• Export your conversations in PDF format.
+• Use the voice input feature for easier interaction.
+• Access FAQs and Support directly from the sidebar.
+
+How to Use:
+1. Type your question in the chat box below or use the microphone icon.
+2. Wait for the chatbot’s response to appear.
+3. To clear the chat, click “New Chat”.
+4. Logged-in users can view and export previous conversations anytime.
+
+Enjoy your experience with the AOU Support Chatbot!

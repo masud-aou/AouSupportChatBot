@@ -1,73 +1,103 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* =========================================================
+   index.css — Global Style Sheet
+   This file defines base styles applied across the app.
+   It sets typography, color scheme, buttons, and link behavior.
+   ========================================================= */
 
+/* ------------------------------
+   Root: Global variables & defaults
+   ------------------------------ */
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;  /* Clean and readable system font */
+  line-height: 1.5;                                             /* Comfortable line spacing */
+  font-weight: 400;                                             /* Normal text weight */
+
+  /* Enables auto theme adjustment for light/dark mode */
   color-scheme: light dark;
+
+  /* Default text and background colors for dark mode */
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
+  /* Improves text rendering for better readability */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ------------------------------
+   Links (<a> tags)
+   ------------------------------ */
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  font-weight: 500;                 /* Slightly bold for visibility */
+  color: #646cff;                   /* Default link color */
+  text-decoration: inherit;         /* Remove underline */
 }
 
 a:hover {
-  color: #535bf2;
+  color: #535bf2;                   /* Brighter color when hovered */
 }
 
+/* ------------------------------
+   Body layout
+   ------------------------------ */
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  margin: 0;                        /* Remove default browser margin */
+  display: flex;                    /* Enable flexible layout for centered content */
+  place-items: center;              /* Center content vertically and horizontally */
+  min-width: 320px;                 /* Ensure proper scaling on mobile */
+  min-height: 100vh;                /* Full viewport height */
 }
 
+/* ------------------------------
+   Headings (H1)
+   ------------------------------ */
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 3.2em;                 /* Large main title */
+  line-height: 1.1;                 /* Tight line spacing for big headings */
 }
 
+/* ------------------------------
+   Buttons
+   ------------------------------ */
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  border-radius: 8px;               /* Smooth rounded corners */
+  border: 1px solid transparent;    /* Subtle border for hover animation */
+  padding: 0.6em 1.2em;             /* Balanced padding for readability */
+  font-size: 1em;                   /* Standard text size */
+  font-weight: 500;                 /* Medium boldness */
+  font-family: inherit;             /* Use global font */
+  background-color: #1a1a1a;        /* Default dark background */
+  cursor: pointer;                  /* Show hand cursor */
+  transition: border-color 0.25s;   /* Smooth hover effect */
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: #646cff;            /* Highlight border when hovered */
 }
 
+/* Focus state for accessibility (keyboard navigation) */
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* ------------------------------
+   Light mode adjustments
+   Automatically applied when system prefers light colors
+   ------------------------------ */
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #213547;                 /* Darker text color for light background */
+    background-color: #ffffff;      /* White background */
   }
 
   a:hover {
-    color: #747bff;
+    color: #747bff;                 /* Softer hover tone for light theme */
   }
 
   button {
-    background-color: #f9f9f9;
+    background-color: #f9f9f9;      /* Lighter button tone */
   }
 }

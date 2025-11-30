@@ -1,201 +1,117 @@
-/* ===== Layout ===== */
-.app {
-    display: flex;
-    height: 100vh;
-    background: #f5f6f8;
-    font-family: system-ui, Arial;
+/* ============================================================
+   styles.css — Tailwind Base + Custom Global Styles
+   This file merges Tailwind utilities with custom animations 
+   and layout adjustments for AOUSupportBot.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Tailwind CSS Directives — These import the framework layers
+   ------------------------------------------------------------ */
+@tailwind base;        /* Base styles like normalize/reset */
+@tailwind components;  /* Predefined Tailwind components */
+@tailwind utilities;   /* Utility classes (e.g., flex, grid, p-4) */
+
+/*------------------------------------------------------------
+   Prevent scrollbars & layout overflow
+   These rules ensure the entire app fits within the viewport.
+  ------------------------------------------------------------ */
+html, body {
+  margin: 0;              /* Remove browser default margins */
+  padding: 0;             /* Remove default padding */
+  width: 100%;            /* Full width of viewport */
+  height: 100%;           /* Full height of viewport */
+  overflow: hidden;       /* Disable all scrolling (no scrollbars) */
 }
 
-.sidebar-left {
-    width: 220px;
-    background: #111827;
-    color: #fff;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* The root container that React mounts into */
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;       /* Ensure app stays fixed inside the viewport */
 }
 
-.sidebar-right {
-    width: 260px;
-    background: #f9fafb;
-    border-left: 1px solid #e5e7eb;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+
+/* ============================================================
+   Splash Screen Animation — Intro animation at startup
+   ============================================================ */
+.splash-screen {
+  position: fixed;                 /* Stay fixed over entire viewport */
+  inset: 0;                        /* Equivalent to top:0, right:0, bottom:0, left:0 */
+  display: flex;                   /* Center the content vertically & horizontally */
+  flex-direction: column;          /* Stack title and subtitle vertically */
+  justify-content: center;         /* Center content vertically */
+  align-items: center;             /* Center content horizontally */
+  background: linear-gradient(to bottom right, #ffffff, #f1f1f1); /* Soft gradient background */
+  animation: fadeOut 6s ease-out forwards;  /* Runs fade-out animation once */
+  z-index: 9999;                   /* Always appear above all content */
+  padding: 0 20px;                 /* Small padding for mobile */
 }
 
-.main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+/* Splash title text */
+.splash-text {
+  font-size: 80px;                 /* Large bold title for desktop */
+  font-weight: 800;                /* Heavy weight for emphasis */
+  color: #353333;                  /* Dark gray text */
+  text-align: center;              /* Centered horizontally */
+  margin-bottom: 12px;             /* Space below title */
+  animation: fadeIn 1s ease forwards;  /* Fade-in effect at start */
 }
 
-.header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    border-bottom: 1px solid #e5e7eb;
-    background: #fff;
+/* Adjust font size for mobile devices */
+@media (max-width: 768px) {
+  .splash-text {
+    font-size: 40px;               /* Smaller on phones */
+  }
 }
 
-.header img {
-    width: 36px;
-    height: 36px;
-    object-fit: contain;
+/* Splash subtitle text */
+.splash-subtext {
+  font-size: 24px;                 /* Slightly smaller than title */
+  font-weight: 500;                /* Medium thickness */
+  color: #474343;                  /* Slightly lighter gray tone */
+  text-align: center;              /* Center align */
+  opacity: 0.9;                    /* Slight transparency */
+  animation: fadeIn 2s ease forwards; /* Fade-in effect (slower than title) */
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 700;
+/* Smaller subtitle text for mobile */
+@media (max-width: 768px) {
+  .splash-subtext {
+    font-size: 16px;
+  }
 }
 
-.content {
-    flex: 1;
-    display: flex;
+
+/* ============================================================
+   Keyframes for fadeIn & fadeOut animations
+   Used by splash-screen and its children for smooth transitions.
+   ============================================================ */
+
+/* Fade-in animation — scales up slightly while becoming visible */
+@keyframes fadeIn {
+  from {
+    opacity: 0;                    /* Invisible at start */
+    transform: scale(0.95);        /* Slightly smaller */
+  }
+  to {
+    opacity: 1;                    /* Fully visible */
+    transform: scale(1);           /* Normal size */
+  }
 }
 
-.chat-wrap {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 12px;
-}
-
-.msg-list {
-    flex: 1;
-    overflow: auto;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 12px;
-}
-
-.msg {
-    margin: 8px 0;
-    display: flex;
-}
-
-.msg.user {
-    justify-content: flex-end;
-}
-
-.bubble {
-    max-width: 70%;
-    padding: 10px 12px;
-    border-radius: 16px;
-    background: #212223;
-}
-
-.msg.user .bubble {
-    background: #72a5e8;
-}
-
-.input-bar {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-}
-
-.input-bar input {
-    flex: 1;
-    padding: 10px 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-}
-
-.input-bar button {
-    padding: 10px 14px;
-    border: 0;
-    border-radius: 10px;
-    background: #2563eb;
-    color: #fff;
-    cursor: pointer;
-}
-
-.input-bar button:disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-.btn {
-    background: #374151;
-    color: #fff;
-    border: 0;
-    border-radius: 10px;
-    padding: 10px 12px;
-    cursor: pointer;
-    text-align: left;
-}
-
-.btn.secondary {
-    background: #1f2937;
-}
-
-.btn.light {
-    background: #fff;
-    color: #111827;
-    border: 1px solid #e5e7eb;
-}
-
-.btn.full {
-    width: 100%;
-    text-align: center;
-}
-
-.card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 12px;
-}
-
-.title-sm {
-    margin: 0 0 6px 0;
-    font-size: 14px;
-    font-weight: 700;
-    color: #111827;
-}
-
-.intro {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 16px;
-    max-width: 680px;
-    margin: 24px auto;
-}
-
-.intro h2 {
-    margin: 0 0 6px 0;
-}
-
-.intro ul {
-    margin: 8px 0 0 22px;
-}
-
-.small {
-    font-size: 12px;
-    color: #6b7280;
-}
-
-.chat-item {
-    padding: 8px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-}
-
-.chat-item.active {
-    border-color: #2563eb;
-}
-
-.hr {
-    height: 1px;
-    background: #e5e7eb;
-    margin: 8px 0;
+/* Fade-out animation — slowly fades and scales away */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;                    /* Fully visible */
+    transform: scale(1);           /* Normal size */
+  }
+  70% {
+    opacity: 0.5;                  /* Half visible */
+    transform: scale(1.02);        /* Slight zoom-out */
+  }
+  100% {
+    opacity: 0;                    /* Invisible */
+    visibility: hidden;            /* Removed from layout */
+    transform: scale(1.05);        /* Small zoom before disappearing */
+  }
 }

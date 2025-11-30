@@ -1,0 +1,23 @@
+❓ 2️⃣ faq.txt — Frequently Asked Questions
+
+(أسئلة متكررة تخص الطلاب والخدمات الجامعية)
+
+AOU SUPPORT CHATBOT - FAQ
+
+Q1: How can I reset my LMS password?
+A1: Visit the AOU LMS login page and click on “Forgot Password”, then follow the instructions.
+
+Q2: Can I access the chatbot without logging in?
+A2: Yes, you can use the chatbot as a guest, but login is required to save chat history or export sessions.
+
+Q3: What kind of questions can I ask?
+A3: You can ask about registration, course schedules, GPA calculation, or general university policies.
+
+Q4: How do I export my conversation?
+A4: Click the “Export Chat” button and choose PDF or TXT format.
+
+Q5: Is the chatbot available on mobile devices?
+A5: Yes, it is fully responsive and works on both desktop and mobile browsers.
+
+Q6: How does the chatbot understand my questions?
+A6: It uses the OpenAI API to generate intelligent and context-aware responses.
