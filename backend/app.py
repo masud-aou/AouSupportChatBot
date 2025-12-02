@@ -4,7 +4,7 @@
 from flask import Flask, request, jsonify       # Flask for creating API routes and handling HTTP requests
 from flask_cors import CORS                     # Enables cross-origin access from the React frontend
 import os, sqlite3, hashlib                     # OS operations, SQLite for the database, and SHA256 for hashing
-from openai import OpenAI                                  # OpenAI library to connect with GPT model
+import openai                                  # OpenAI library to connect with GPT model
 from dotenv import load_dotenv                  # Loads environment variables from .env file
 from pathlib import Path                        # Used to accurately locate files such as .env
 from uuid import uuid4                          # Generates unique IDs for temporary or new sessions
@@ -18,15 +18,11 @@ from .database import (
 
 load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
-# Retrieve the OpenAI API key from the environment
 api_key = os.getenv("OPENAI_API_KEY")
-
-# Ensure the API key is present; otherwise raise an error
 if not api_key:
     raise RuntimeError("OPENAI_API_KEY is missing. Please check your .env file or environment variables.")
 
-# Create OpenAI client instance
-client = OpenAI(api_key=api_key)
+openai.api_key = api_key
 
 # Create the Flask application instance
 app = Flask(__name__)
@@ -102,7 +98,7 @@ def chat():
     try:
         # Send request to OpenAI for response generation
         response = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
+            model="gpt-3.5-turbo",
             messages=messages,
             temperature=0.4
         )
