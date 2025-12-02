@@ -242,9 +242,7 @@ def sessions():
     data = get_sessions(user_id)
     return jsonify(data)
 
-@app.get("/health")
-def health():
-    return "OK", 200
+
 
 
 # Run the Flask server (for local development)
