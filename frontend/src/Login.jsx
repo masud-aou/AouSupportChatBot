@@ -5,6 +5,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "https://aousupportchatbot.onrender.com";
+
+
+
 function Login({ onLogin }) {
   // -----------------------------------------------
   // State Management — Track form inputs & messages
@@ -30,7 +35,7 @@ function Login({ onLogin }) {
 
     try {
       // Send POST request to Flask API
-      const res = await axios.post("http://localhost:8000/login", {
+      const res = await axios.post(`${API_BASE}/login`, {
         email,
         password,
       });
@@ -63,7 +68,7 @@ function Login({ onLogin }) {
 
     try {
       // Send registration request
-      const res = await axios.post("http://localhost:8000/register", {
+      const res = await axios.post(`${API_BASE}/register`, {
         username,
         email,
         password,

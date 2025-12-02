@@ -130,7 +130,7 @@ const handleLogin = async (user) => {
   localStorage.setItem("aou_is_logged_in", "true");
 
   try {
-    const res = await axios.get("`${API_BASE}/sessions", {
+    const res = await axios.get(`${API_BASE}/sessions`, {
       params: { email: user.email },
     });
 
@@ -206,7 +206,7 @@ const renameChat = async (id, newTitle) => {
     );
 
     if (isLoggedIn && userInfo?.email) {
-      await axios.post("`${API_BASE}/session/title", {
+      await axios.post(`${API_BASE}/session/title`, {
         email: userInfo.email,
         session_id: id,
         title: newTitle,
@@ -233,7 +233,7 @@ const switchChat = async (id) => {
     setShowIntro(false);
 
     // اRetrieve conversations from the server
-    const res = await axios.get("`${API_BASE}/history", {
+    const res = await axios.get(`${API_BASE}/history`, {
       params: { email: userInfo?.email || "", session_id: id },
     });
 
@@ -293,7 +293,7 @@ const send = async (e) => {
 
     //Important: Send "previous date only" without the current message.
     //Because the backend adds the current question back by itself.
-    const res = await axios.post("`${API_BASE}/chat", {
+    const res = await axios.post(`${API_BASE}/chat`, {
       message: text,
       history: items,  
       email: isLoggedIn && userInfo?.email ? userInfo.email : "",
