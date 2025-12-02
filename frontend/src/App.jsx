@@ -126,7 +126,7 @@ const handleLogin = async (user) => {
   localStorage.setItem("aou_is_logged_in", "true");
 
   try {
-    const res = await axios.get("http://localhost:8000/sessions", {
+    const res = await axios.get("https://aousupportchatbot.onrender.com/chat/sessions", {
       params: { email: user.email },
     });
 
@@ -202,7 +202,7 @@ const renameChat = async (id, newTitle) => {
     );
 
     if (isLoggedIn && userInfo?.email) {
-      await axios.post("http://localhost:8000/session/title", {
+      await axios.post("https://aousupportchatbot.onrender.com/chat/session/title", {
         email: userInfo.email,
         session_id: id,
         title: newTitle,
@@ -228,29 +228,29 @@ const switchChat = async (id) => {
     setActiveId(id);
     setShowIntro(false);
 
-    // استرجع المحادثات من السيرفر
-    const res = await axios.get("http://localhost:8000/history", {
+    // اRetrieve conversations from the server
+    const res = await axios.get("https://aousupportchatbot.onrender.com/chat/history", {
       params: { email: userInfo?.email || "", session_id: id },
     });
 
-    // تأكد من وجود بيانات راجعة
+    //Make sure there is reference data.
     const fetched = res.data || [];
 
-    // صيغة التحويل لتناسق العرض في React
+    //Conversion format to fit React display
     const formatted = fetched.map((m) => ({
       role: m.role,
       text:
         typeof m.text === "string"
-          ? m.text.replace(/^'|'$/g, "") // إزالة علامات التنصيص الزائدة من النصوص العربية
+          ? m.text.replace(/^'|'$/g, "") //Removing excess quotation marks from Arabic texts
           : "",
       direction: /[\u0600-\u06FF]/.test(m.text) ? "rtl" : "ltr",
       align: /[\u0600-\u06FF]/.test(m.text) ? "right" : "left",
     }));
 
-    // حدّث الحالة (UI)
+    //Update the status (UI)
     setItems(formatted);
 
-    // حدّث بيانات الجلسة في history
+    //Update session data in history
     setHistory((h) =>
       h.map((c) =>
         c.id === id ? { ...c, items: formatted } : c
@@ -279,7 +279,7 @@ const send = async (e) => {
   const text = msg.trim();
   if (!text) return;
 
-  // أضف رسالة المستخدم فوراً إلى الواجهة
+  //Add the user message to the interface immediately
   const next = [...items, { role: "user", text }];
   saveActive(next);    // يحدّث items و history[activeId].items
   setMsg("");
@@ -287,11 +287,11 @@ const send = async (e) => {
   try {
     setLoading(true);
 
-    // مهم: أرسل "التاريخ السابق فقط" بدون الرسالة الحالية
-    // لأن الباك إند يضيف السؤال الحالي مرة أخرى بنفسه.
-    const res = await axios.post("http://localhost:8000/chat", {
+    //Important: Send "previous date only" without the current message.
+    //Because the backend adds the current question back by itself.
+    const res = await axios.post("https://aousupportchatbot.onrender.com/chat/chat", {
       message: text,
-      history: items,  // ليس next
+      history: items,  
       email: isLoggedIn && userInfo?.email ? userInfo.email : "",
       session_id: sessionId,
     });
