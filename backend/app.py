@@ -10,7 +10,7 @@ from pathlib import Path                        # Used to accurately locate file
 from uuid import uuid4                          # Generates unique IDs for temporary or new sessions
 
 # Import database helper functions
-from database import (
+from .database import (
     init_db, get_user_id, save_message,
     get_chat_history, get_sessions,
     upsert_session_title, delete_session
