@@ -243,6 +243,11 @@ def sessions():
     return jsonify(data)
 
 
+@app.get("/")
+def index():
+    return "AOU Support Chatbot backend is running.", 200
+
+
 
 
 # Run the Flask server (for local development)
