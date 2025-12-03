@@ -19,10 +19,12 @@ from .database import (
 load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 
 api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise RuntimeError("OPENAI_API_KEY is missing. Please check your .env file or environment variables.")
 
-openai.api_key = api_key
+if not api_key:
+    # dont raise error, just print warning
+    print("WARNING: OPENAI_API_KEY is missing. The chatbot endpoint will return an error until it is set.")
+else:
+    openai.api_key = api_key
 
 # Create the Flask application instance
 app = Flask(__name__)
