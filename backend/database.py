@@ -3,11 +3,15 @@
 import sqlite3   # SQLite for database operations
 import os        # Used for defining correct file paths
 
+BASE_DIR = os.path.dirname(__file__)
+DB_PATH = os.path.join(BASE_DIR, "users.db")
+
+
 
 # Initialize the database and create all required tables if they don’t exist
 def init_db():
     """Creates the database and its tables on the first run if not already created."""
-    conn = sqlite3.connect(os.path.join(os.path.dirname(__file__), "users.db"))
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # Users table
@@ -55,7 +59,7 @@ def get_user_id(email: str):
     """Returns the user ID linked to a given email. Returns None if not found."""
     if not email:
         return None
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM users WHERE email = ?", (email,))
     row = cursor.fetchone()
@@ -68,7 +72,7 @@ def save_message(user_id: int, session_id: str, role: str, message: str):
     """Stores a single chat line for a given session and ensures the session exists."""
     if not user_id or not session_id or not message:
         return
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # Insert message into chats table
@@ -92,7 +96,7 @@ def get_chat_history(user_id: int, session_id: str):
     """Returns all chat messages in a session in chronological order."""
     if not user_id or not session_id:
         return []
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(
         "SELECT role, message FROM chats WHERE user_id = ? AND session_id = ? ORDER BY id",
@@ -108,7 +112,7 @@ def get_sessions(user_id: int):
     """Returns all sessions for a user including message count and last activity."""
     if not user_id:
         return []
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute(
         """
@@ -145,7 +149,7 @@ def upsert_session_title(user_id: int, session_id: str, title: str):
     """Creates or updates a chat session title for a specific user."""
     if not user_id or not session_id:
         return False
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # Ensure the session record exists
@@ -170,7 +174,7 @@ def delete_session(user_id: int, session_id: str):
     """Removes a full session (including its messages and metadata)."""
     if not user_id or not session_id:
         return 0
-    conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     # Delete all messages first
