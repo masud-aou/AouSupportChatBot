@@ -149,7 +149,7 @@ const handleLogin = async (user) => {
 
 // Export active chat conversation (PDF or TXT)
 const handleExport = (type) => {
-  // 1) اRely on the messages displayed now first.
+  // 1) Rely on the messages displayed now first.
   const chatData =
     (items && items.length ? items : []) ||
     (history.find((x) => x.id === activeId)?.items || []);
@@ -233,7 +233,7 @@ const switchChat = async (id) => {
     setShowIntro(false);
 
     // اRetrieve conversations from the server
-    const res = await axios.get(`${API_BASE}/history`, {
+      const res = await axios.get(`${API_BASE}/history`, {
       params: { email: userInfo?.email || "", session_id: id },
     });
 
@@ -285,7 +285,7 @@ const send = async (e) => {
 
   //Add the user message to the interface immediately
   const next = [...items, { role: "user", text }];
-  saveActive(next);    // يحدّث items و history[activeId].items
+  saveActive(next);   // Limit items and history[active Id].items
   setMsg("");
 
   try {
@@ -302,19 +302,19 @@ const send = async (e) => {
 
     const ans = res?.data?.answer ?? "No response received.";
 
-    // لو السيرفر رجّع session_id جديد، ثبّته فورًا في الحالة وقائمة الجلسات
+    //If the server restores a new session_id, immediately add it to the status and session list.
     if (res.data?.session_id && res.data.session_id !== sessionId) {
       const newId = res.data.session_id;
       setSessionId(newId);
 
-      // غيّر معرّف الجلسة الحالية داخل history ليطابق معرّف السيرفر
+// Change the current session ID in history to match the server ID
       setHistory((h) => h.map((c) => (c.id === activeId ? { ...c, id: newId } : c)));
       setActiveId(newId);
     }
 
-    // تأثير الكتابة (stream-like)
+    // The effect of writing (stream-like)
     let displayedText = "";
-    // أضف مكان لرسالة البوت الفارغة (سيتم ملؤه تدريجيًا)
+// Add the empty bot message field (it will be filled gradually)
     saveActive([...next, { role: "bot", text: "" }]);
     let i = 0;
 
@@ -334,24 +334,24 @@ const send = async (e) => {
         });
       } else {
         clearInterval(typing);
-        // بعد اكتمال الكتابة، خزّن الحالة النهائية في history
+// After writing is complete, store the final state in history
         setItems((prev) => {
           const finalList = [...prev];
-          saveActive(finalList);    // يحدّث history[activeId].items بالنسخة النهائية
+          saveActive(finalList);    // Updates history[active Id].items final version
           return finalList;
         });
       }
-    }, 30);
+    }, 25);//typing speed for bot response
 
   } catch (error) {
     console.error("Server error:", error);
-    // أظهر رسالة خطأ داخل المحادثة واحفظها
+// Display an error message within the conversation and save it
     const fail = [...next, { role: "bot", text: "Connection error with server." }];
     saveActive(fail);
 
   } finally {
     setLoading(false);
-    // مزامنة احتياطية: تأكد أن history يحمل آخر items (حتى لو بدون انتظار انتهاء الكتابة)
+// Backup synchronization: Make sure that history holds the latest items (even without waiting for the writing to finish)
     setHistory((h) => h.map((c) => (c.id === activeId ? { ...c, items } : c)));
   }
 };
@@ -405,7 +405,7 @@ function convertLinks(text) {
   });
 }
 
-// ======================
+
 // Main Component Layout
 // ======================
 if (showSplash) {
@@ -475,7 +475,7 @@ return (
         Support
       </button>
 
-      {/* ✅ زر التصدير يظهر فقط إذا المستخدم مسجل */}
+      {/* ✅ The export button only appears if the user is logged in */}
       {isLoggedIn && (
         <button
           className="bg-green-700 rounded-lg p-2 text-left"
