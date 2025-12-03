@@ -38,10 +38,23 @@ CORS(app)
 
 # Reads and returns the content of the knowledge file used for chatbot responses
 def load_knowledge():
+
     try:
-        with open("../data/knowledge.txt", "r", encoding="utf-8") as f:
+        # Get the absolute path to the backend folder
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        
+        # Construct the absolute path to the knowledge.txt file
+        KNOWLEDGE_PATH = os.path.join(BASE_DIR, "..", "data", "knowledge.txt")
+
+        # Normalize the path
+        KNOWLEDGE_PATH = os.path.normpath(KNOWLEDGE_PATH)
+
+        # Read the file
+        with open(KNOWLEDGE_PATH, "r", encoding="utf-8") as f:
             return f.read()
-    except Exception:
+
+    except Exception as e:
+        print("Error loading knowledge file:", e)
         return "Knowledge file is not available right now."
 
 
