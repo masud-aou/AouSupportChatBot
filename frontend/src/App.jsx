@@ -220,49 +220,27 @@ const renameChat = async (id, newTitle) => {
 // Switch between existing sessions and load their messages
 // Switch between existing sessions and load their messages
 // Switch between existing sessions and load their messages
-const switchChat = async (id) => {
-  try {
-    //Save the current session before switching
-    setHistory((h) =>
-      h.map((c) =>
-        c.id === activeId ? { ...c, items } : c
-      )
-    );
+const switchChat = (id) => {
+  // احفظ الشات الحالي في history
+  setHistory((h) =>
+    h.map((c) =>
+      c.id === activeId ? { ...c, items } : c
+    )
+  );
 
-    setActiveId(id);
-    setShowIntro(false);
+  // فعّل الشات الجديد
+  setActiveId(id);
+  setShowIntro(false);
 
-    // اRetrieve conversations from the server
-      const res = await axios.get(`${API_BASE}/history`, {
-      params: { email: userInfo?.email || "", session_id: id },
-    });
+  // حمّل رسائل الشات المختار من history
+  const selected = history.find((c) => c.id === id);
+  const newItems = selected?.items || [];
+  setItems(newItems);
 
-    //Make sure there is reference data.
-    const fetched = res.data || [];
-
-    //Conversion format to fit React display
-    const formatted = fetched.map((m) => ({
-      role: m.role,
-      text:
-        typeof m.text === "string"
-          ? m.text.replace(/^'|'$/g, "") //Removing excess quotation marks from Arabic texts
-          : "",
-      direction: /[\u0600-\u06FF]/.test(m.text) ? "rtl" : "ltr",
-      align: /[\u0600-\u06FF]/.test(m.text) ? "right" : "left",
-    }));
-
-    //Update the status (UI)
-    setItems(formatted);
-
-    //Update session data in history
-    setHistory((h) =>
-      h.map((c) =>
-        c.id === id ? { ...c, items: formatted } : c
-      )
-    );
-  } catch (err) {
-    console.error("Failed to load chat history:", err);
-  }
+  if (!activeId) return;
+  setHistory((h) =>
+    h.map((c) => (c.id === activeId ? { ...c, items: newItems } : c))
+  );
 };
 
 
@@ -349,11 +327,11 @@ const send = async (e) => {
     const fail = [...next, { role: "bot", text: "Connection error with server." }];
     saveActive(fail);
 
-  } finally {
-    setLoading(false);
-// Backup synchronization: Make sure that history holds the latest items (even without waiting for the writing to finish)
-    setHistory((h) => h.map((c) => (c.id === activeId ? { ...c, items } : c)));
-  }
+} finally {
+  setLoading(false);
+  // لا تعفس history هنا
+  // setHistory((h) => h.map((c) => (c.id === activeId ? { ...c, items } : c)));
+}
 };
 
 
